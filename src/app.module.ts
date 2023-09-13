@@ -2,6 +2,10 @@ import { RedisModule } from '@nestjs-modules/ioredis';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { OrderModule } from './order/order.module';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { ResponseInterceptor } from './response.interceptor';
+import { HttpExceptionFilter } from './http-exception.filter';
 
 @Module({
     imports: [
@@ -13,6 +17,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
             cache: true,
             envFilePath: ['.env.dev', '.env.prod', '.env'],
         }),
+        // 数据库模块
         TypeOrmModule.forRootAsync({
             imports: [ConfigModule],
             inject: [ConfigService],
@@ -30,6 +35,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
                 logger: 'advanced-console',
             }),
         }),
+        // Redis模块
         RedisModule.forRootAsync({
             imports: [ConfigModule],
             inject: [ConfigService],
@@ -42,8 +48,20 @@ import { TypeOrmModule } from '@nestjs/typeorm';
                 },
             }),
         }),
+        OrderModule,
     ],
     controllers: [],
-    providers: [],
+    providers: [
+        // 全局响应拦截器
+        {
+            provide: APP_INTERCEPTOR,
+            useClass: ResponseInterceptor,
+        },
+        // 全局异常过滤器
+        {
+            provide: APP_FILTER,
+            useClass: HttpExceptionFilter,
+        },
+    ],
 })
 export class AppModule {}
