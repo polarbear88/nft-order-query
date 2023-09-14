@@ -30,6 +30,9 @@ export class ResponseInterceptor implements NestInterceptor {
     }
 
     private serializeData(data: any) {
+        if (data === null || data === undefined) {
+            return null;
+        }
         if (typeof data === 'object' && typeof data.toJson === 'function') {
             return data.toJson();
         }

@@ -28,7 +28,14 @@ export class BaseEntity {
     }
 
     public fromJson(json: any): any {
-        Object.assign(this, json);
+        const data = typeof json === 'string' ? JSON.parse(json) : json;
+        Object.assign(this, data);
+        if (typeof this.createdAt === 'string' || typeof this.createdAt === 'number') {
+            this.createdAt = new Date(this.createdAt);
+        }
+        if (typeof this.updatedAt === 'string' || typeof this.updatedAt === 'number') {
+            this.updatedAt = new Date(this.updatedAt);
+        }
         return this;
     }
 

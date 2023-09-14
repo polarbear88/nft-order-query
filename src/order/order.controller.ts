@@ -28,6 +28,6 @@ export class OrderController {
         if (orders.length === 0) {
             throw new NotFoundException('没有查询到订单');
         }
-        return orders.reverse();
+        return orders;
     }
 }
