@@ -27,8 +27,9 @@ export class BaseEntity {
         return this._deleteConfidential(this.shield, data);
     }
 
-    public fromJson(json: any): void {
+    public fromJson(json: any): any {
         Object.assign(this, json);
+        return this;
     }
 
     public toJson(): any {

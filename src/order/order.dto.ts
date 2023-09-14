@@ -19,3 +19,10 @@ export class OrderAddDto {
     @IsString({ message: '支付链接必须为字符串' })
     payUrl: string;
 }
+
+export class OrderQueryDto {
+    @IsNotEmpty({ message: '手机号不能为空' })
+    @IsString({ message: '手机号必须为字符串' })
+    @MaxLength(255, { message: '手机号长度不能超过255字节' })
+    mobile: string;
+}

@@ -1,6 +1,6 @@
-import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, NotFoundException, Post } from '@nestjs/common';
 import { OrderService } from './order.service';
-import { OrderAddDto } from './order.dto';
+import { OrderAddDto, OrderQueryDto } from './order.dto';
 import { ConfigService } from '@nestjs/config';
 
 @Controller({ version: '1' })
@@ -20,5 +20,14 @@ export class OrderController {
         const order = await this.orderService.addOrder(dto);
         await this.orderService.addOrderToCache(order);
         return null;
+    }
+
+    @Post('query')
+    async query(@Body() dto: OrderQueryDto) {
+        const orders = await this.orderService.queryFromCache(dto.mobile);
+        if (orders.length === 0) {
+            throw new NotFoundException('没有查询到订单');
+        }
+        return orders.reverse();
     }
 }

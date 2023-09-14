@@ -33,4 +33,10 @@ export class OrderService extends BaseService<Order> {
             throw new BadGatewayException('订单添加到缓存失败');
         }
     }
+
+    async queryFromCache(mobile: string): Promise<Order[]> {
+        // 仅查询最近100条订单
+        const orders = await this.redis.lrange(mobile + '-order', 0, 100);
+        return orders.map((order) => new Order().fromJson(order));
+    }
 }
