@@ -108,6 +108,11 @@ export class RedisService {
         return await this.redis.expire(key, seconds);
     }
 
+    // 清空数据
+    async flushAll() {
+        await this.redis.flushall();
+    }
+
     getClient(): Redis {
         return this.redis;
     }

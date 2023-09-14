@@ -39,4 +39,15 @@ export class OrderService extends BaseService<Order> {
         const orders = await this.redis.lrange(mobile + '-order', 0, 100);
         return orders.map((order) => new Order().fromJson(order));
     }
+
+    /**
+     * 重新制作全部数据的缓存
+     */
+    async remakeCache(): Promise<void> {
+        this.redis.flushAll();
+        const orders = await this.repo.find();
+        for (const order of orders) {
+            await this.addOrderToCache(order);
+        }
+    }
 }

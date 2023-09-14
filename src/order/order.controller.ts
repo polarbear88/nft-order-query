@@ -30,4 +30,14 @@ export class OrderController {
         }
         return orders;
     }
+
+    @Post('remakeCache')
+    async remakeCache(@Body('ticket') t: string) {
+        const ticket = this.configService.get('ORDER_ACCESS_TOKEN');
+        if (ticket !== t) {
+            throw new BadRequestException('访问令牌错误');
+        }
+        await this.orderService.remakeCache();
+        return null;
+    }
 }
