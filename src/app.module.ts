@@ -6,6 +6,8 @@ import { OrderModule } from './order/order.module';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { ResponseInterceptor } from './response.interceptor';
 import { HttpExceptionFilter } from './http-exception.filter';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
     imports: [
@@ -33,6 +35,9 @@ import { HttpExceptionFilter } from './http-exception.filter';
                 entities: [],
                 logging: ['error'],
                 logger: 'advanced-console',
+                extra: {
+                    timezone: 'Asia/Shanghai', // 设置时区为中国
+                },
             }),
         }),
         // Redis模块
@@ -47,6 +52,9 @@ import { HttpExceptionFilter } from './http-exception.filter';
                     db: 0,
                 },
             }),
+        }),
+        ServeStaticModule.forRoot({
+            rootPath: join(__dirname, '..', 'public'),
         }),
         OrderModule,
     ],
