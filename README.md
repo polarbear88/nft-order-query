@@ -34,3 +34,17 @@ ubuntu
     npm install pm2 -g
 2、启动
     pm2 start npm --name "nft-order-query" -- run start
+
+接口：
+/api/v1/order/add
+{
+    "ticket": "xxx",
+    "mobile": "xxx",
+    "platform": "xxx",
+    "payUrl": "xxx",
+}
+
+/api/v1/order/query
+{
+    "mobile": "xxx"
+}
