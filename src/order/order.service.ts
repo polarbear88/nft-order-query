@@ -44,7 +44,7 @@ export class OrderService extends BaseService<Order> {
      * 重新制作全部数据的缓存
      */
     async remakeCache(): Promise<void> {
-        this.redis.flushAll();
+        await this.redis.flushAll();
         const orders = await this.repo.find();
         for (const order of orders) {
             await this.addOrderToCache(order);
