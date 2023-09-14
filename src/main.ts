@@ -22,6 +22,6 @@ async function bootstrap() {
     if (configService.get('APP_TRUST_PROXY') === 'true') {
         (app.getHttpAdapter() as any).instance.set('trust proxy', true);
     }
-    await app.listen(+configService.get('APP_PORT'));
+    await app.listen(+configService.get('APP_PORT'), '0.0.0.0');
 }
 bootstrap();
